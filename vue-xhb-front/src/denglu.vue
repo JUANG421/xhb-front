@@ -1,5 +1,17 @@
 <script setup>
 // 登录页面组件
+import { 
+  loginData, 
+  isFormValid, 
+  handleLogin, 
+  handleKeyPress, 
+  handleForgotPassword, 
+  handleRegister,
+  initLoginPage 
+} from './denglu.js'
+
+// 页面初始化
+initLoginPage()
 </script>
 
 <template>
@@ -14,26 +26,42 @@
       
       <!-- 账号输入框 -->
       <div class="input-container account-input">
-        <span class="input-label">账号</span>
+        <input
+          type="text"
+          v-model="loginData.username"
+          placeholder="请输入账号"
+          class="input-field"
+          @keyup="handleKeyPress"
+          :disabled="loginData.isLoading"
+        />
       </div>
       
       <!-- 密码输入框 -->
       <div class="input-container password-input">
-        <span class="input-label">密码</span>
-        <img
-          class="eye-icon"
-          src="https://ide.code.fun/api/image?token=6879c3d1797f850011081d0b&name=21288affc52c74f9158c7eaeb9600a22.png"
+        <input
+          type="password"
+          v-model="loginData.password"
+          placeholder="请输入密码"
+          class="input-field"
+          @keyup="handleKeyPress"
+          :disabled="loginData.isLoading"
         />
       </div>
       
       <!-- 登录按钮 -->
-      <div class="login-button">
-        <span class="login-text">登录</span>
+      <div 
+        class="login-button"
+        :class="{ 'disabled': !isFormValid }"
+        @click="handleLogin"
+      >
+        <span class="login-text">
+          {{ loginData.isLoading ? '登录中...' : '登录' }}
+        </span>
       </div>
       
       <!-- 底部链接 -->
-      <span class="forgot-password">忘记密码？|</span>
-      <span class="register-account">注册账号</span>
+      <span class="forgot-password" @click="handleForgotPassword">忘记密码？|</span>
+      <span class="register-account" @click="handleRegister">注册账号</span>
     </div>
   </div>
 </template>
@@ -239,30 +267,42 @@ html, body {
   color: #000000;
 }
 
+/* ===== 输入框样式 ===== */
+.input-field {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 1rem;
+  font-family: AlibabaPuHuiTi;
+  color: #000000;
+  padding: 0;
+  margin: 0;
+}
+
+.input-field::placeholder {
+  color: #999999;
+  font-size: 0.9rem;
+}
+
+.input-field:focus {
+  outline: none;
+}
+
+.input-field:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 /* ===== 密码输入框容器 ===== */
 .password-input {
-  padding: 0.2rem 1.13rem 0.31rem;
+  padding: 0.45rem 1.13rem 0.45rem;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   bottom: 20%;
 }
 
-/* ===== 密码输入框内的文字标签 ===== */
-.password-input .input-label {
-  color: #383838;
-  font-size: 1rem;
-  font-family: AlibabaPuHuiTi;
-  line-height: 0.8;
-}
 
-/* ===== 密码框右侧的眼睛图标 ===== */
-.eye-icon {
-  margin-right: 0.15rem;
-  width: 1.2rem;
-  height: 1rem;
-  margin-top: 0.35rem;
-}
 
 /* ===== 登录按钮容器 ===== */
 .login-button {
@@ -290,6 +330,18 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* ===== 登录按钮禁用状态 ===== */
+.login-button.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-image: linear-gradient(90deg, #cccccc 0%, #e0e0e0 100%);
+}
+
+.login-button:not(.disabled):hover {
+  transform: translateX(-50%) scale(1.02);
+  transition: transform 0.2s ease;
 }
 
 /* ===== 底部 "忘记密码？" 链接 ===== */
@@ -322,5 +374,22 @@ html, body {
   bottom: 10%;
   left: 45%;
   transform: translateX(50%);
+}
+
+/* ===== 底部链接点击样式 ===== */
+.forgot-password,
+.register-account {
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.forgot-password:hover,
+.register-account:hover {
+  opacity: 0.8;
+}
+
+.forgot-password:active,
+.register-account:active {
+  opacity: 0.6;
 }
 </style>
