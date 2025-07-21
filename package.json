@@ -1,0 +1,14 @@
+{
+  "name": "xhb-front",
+  "version": "1.0.0",
+  "description": "心禾伴前端項目",
+  "scripts": {
+    "dev": "cd xhb-front-page1/vue-xhb-front && npm run dev",
+    "build": "cd xhb-front-page1/vue-xhb-front && npm run build",
+    "preview": "cd xhb-front-page1/vue-xhb-front && npm run preview",
+    "install-deps": "cd xhb-front-page1/vue-xhb-front && npm install"
+  },
+  "keywords": ["vue", "frontend"],
+  "author": "",
+  "license": "MIT"
+} 
